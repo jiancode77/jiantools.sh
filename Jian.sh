@@ -90,11 +90,11 @@ get_system_info() {
 display_header() {
     get_system_info
     echo -e "${BLUE}────────────────────────────────────────────────────────────────${NC}"
-    echo -e "${BLUE}│ ${GREEN}◉ ${WHITE}System: $system_display${BLUE}│${NC}" | sed "s/System: $system_display/System: $system_display$(printf '%*s' $((50 - ${#system_display})) )/"
-    echo -e "${BLUE}│ ${GREEN}◉ ${WHITE}Device: $device_display${BLUE}│${NC}" | sed "s/Device: $device_display/Device: $device_display$(printf '%*s' $((50 - ${#device_display})) )/"
-    echo -e "${BLUE}│ ${GREEN}◉ ${WHITE}CPU: $cpu_display${BLUE}│${NC}" | sed "s/CPU: $cpu_display/CPU: $cpu_display$(printf '%*s' $((50 - ${#cpu_display})) )/"
-    echo -e "${BLUE}│ ${GREEN}◉ ${WHITE}Memory: $memory_display${BLUE}│${NC}" | sed "s/Memory: $memory_display/Memory: $memory_display$(printf '%*s' $((50 - ${#memory_display})) )/"
-    echo -e "${BLUE}│ ${GREEN}◉ ${WHITE}Uptime: $uptime_display${BLUE}│${NC}" | sed "s/Uptime: $uptime_display/Uptime: $uptime_display$(printf '%*s' $((50 - ${#uptime_display})) )/"
+    printf "${BLUE}│ ${GREEN}◉ ${WHITE}System: %-45s ${BLUE}│${NC}\n" "$system_display"
+    printf "${BLUE}│ ${GREEN}◉ ${WHITE}Device: %-45s ${BLUE}│${NC}\n" "$device_display"
+    printf "${BLUE}│ ${GREEN}◉ ${WHITE}CPU: %-48s ${BLUE}│${NC}\n" "$cpu_display"
+    printf "${BLUE}│ ${GREEN}◉ ${WHITE}Memory: %-46s ${BLUE}│${NC}\n" "$memory_display"
+    printf "${BLUE}│ ${GREEN}◉ ${WHITE}Uptime: %-46s ${BLUE}│${NC}\n" "$uptime_display"
     echo -e "${BLUE}────────────────────────────────────────────────────────────────${NC}"
     echo
 }
