@@ -7,18 +7,22 @@ BLUE='\033[0;34m'
 PURPLE='\033[0;35m'
 CYAN='\033[0;36m'
 WHITE='\033[1;37m'
-ORANGE='\033[38;5;208m'
-BLOOD_RED='\033[38;5;88m'
-DARK_BLUE='\033[38;5;19m'
-GOLD='\033[38;5;220m'
-SILVER='\033[38;5;250m'
+BOLD='\033[1m'
+DIM='\033[2m'
 NC='\033[0m'
+
+GOLD='\033[38;5;220m'
+DARK_BLUE='\033[38;5;33m'
+BRIGHT_CYAN='\033[38;5;51m'
+ORANGE='\033[38;5;208m'
+DARK_PURPLE='\033[38;5;93m'
+BRIGHT_WHITE='\033[38;5;231m'
 
 progress_bar() {
     local duration=$1
-    printf "${BLOOD_RED}["
+    printf "${DARK_BLUE}["
     for ((i=0; i<duration; i++)); do
-        printf "█"
+        printf "▰"
         sleep 0.1
     done
     printf "]${NC}\n"
@@ -27,7 +31,7 @@ progress_bar() {
 
 display_header() {
     clear
-    echo -e "${BLOOD_RED}"
+    echo -e "${GOLD}${BOLD}"
     echo "                                             ......                                                 "
     echo "                                        ..#@@@@@@@@@@#...                                           "
     echo "                                     ..*@@@#-.. ...-%@@@#%%%#*-..                                   "
@@ -58,33 +62,35 @@ display_header() {
     echo "                       ..:-:.. .... .................  :-.........       ...                        "
     echo "                                               ..."
     echo -e "${NC}"
-    echo -e "${BLOOD_RED}                    ═════ AI CHAT TERMINAL v4.0 ═════${NC}"
+    echo -e "${BRIGHT_CYAN}${BOLD}                    ╔═══════════════════════════════════════════════╗${NC}"
+    echo -e "${BRIGHT_CYAN}${BOLD}                    ║  ⚡ AI CHAT TERMINAL v4.0 ULTIMATE ⚡  ║${NC}"
+    echo -e "${BRIGHT_CYAN}${BOLD}                    ╚═══════════════════════════════════════════════╝${NC}"
     echo
     
-    echo -e "${DARK_BLUE}╔══════════════════════════════════════════════════════════════╗${NC}"
-    echo -e "${DARK_BLUE}║ ${GOLD}♛ ${WHITE}System: Ubuntu 22.04 LTS x86_64                          ${DARK_BLUE}║${NC}"
-    echo -e "${DARK_BLUE}║ ${GOLD}♛ ${WHITE}CPU: AMD Ryzen 7 5800X (16) @ 3.800GHz                   ${DARK_BLUE}║${NC}"
-    echo -e "${DARK_BLUE}║ ${GOLD}♛ ${WHITE}Memory: 15888MiB / 32061MiB                              ${DARK_BLUE}║${NC}"
-    echo -e "${DARK_BLUE}║ ${GOLD}♛ ${WHITE}Uptime: 2 hours, 35 minutes                              ${DARK_BLUE}║${NC}"
-    echo -e "${DARK_BLUE}╚══════════════════════════════════════════════════════════════╝${NC}"
+    echo -e "${DARK_BLUE}${BOLD}╔════════════════════════════════════════════════════════════════════╗${NC}"
+    echo -e "${DARK_BLUE}${BOLD}║${NC} ${GOLD}⚙${NC}  ${GREEN}${BOLD}System:${NC} ${BRIGHT_WHITE}Ubuntu 22.04 LTS x86_64${NC}                             ${DARK_BLUE}${BOLD}║${NC}"
+    echo -e "${DARK_BLUE}${BOLD}║${NC} ${GOLD}🔥${NC} ${GREEN}${BOLD}CPU:${NC} ${BRIGHT_WHITE}AMD Ryzen 7 5800X (16) @ 3.800GHz${NC}                    ${DARK_BLUE}${BOLD}║${NC}"
+    echo -e "${DARK_BLUE}${BOLD}║${NC} ${GOLD}💎${NC} ${GREEN}${BOLD}Memory:${NC} ${BRIGHT_WHITE}15888MiB / 32061MiB${NC}                                  ${DARK_BLUE}${BOLD}║${NC}"
+    echo -e "${DARK_BLUE}${BOLD}║${NC} ${GOLD}⏱${NC}  ${GREEN}${BOLD}Uptime:${NC} ${BRIGHT_WHITE}2 hours, 35 minutes${NC}                                  ${DARK_BLUE}${BOLD}║${NC}"
+    echo -e "${DARK_BLUE}${BOLD}╚════════════════════════════════════════════════════════════════════╝${NC}"
     echo
 }
 
 show_models() {
-    echo -e "${BLOOD_RED}▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄${NC}"
-    echo -e "${BLOOD_RED}█                       AI MODEL SELECTION                       █${NC}"
-    echo -e "${BLOOD_RED}█▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█${NC}"
-    echo -e "${BLOOD_RED}█ ${GOLD}1${BLOOD_RED} │ ${SILVER}▓▓▓ GPT-4o ${BLOOD_RED}       │ ${GREEN}OpenAI Latest Model                  ${BLOOD_RED}█${NC}"
-    echo -e "${BLOOD_RED}█ ${GOLD}2${BLOOD_RED} │ ${SILVER}▓▓▓ GPT-5 ${BLOOD_RED}        │ ${GREEN}Next Generation GPT                 ${BLOOD_RED}█${NC}"
-    echo -e "${BLOOD_RED}█ ${GOLD}3${BLOOD_RED} │ ${SILVER}▓▓▓ Gemini ${BLOOD_RED}       │ ${GREEN}Google AI Assistant                 ${BLOOD_RED}█${NC}"
-    echo -e "${BLOOD_RED}█ ${GOLD}4${BLOOD_RED} │ ${SILVER}▓▓▓ DeepSeek ${BLOOD_RED}     │ ${GREEN}DeepSeek Coder                      ${BLOOD_RED}█${NC}"
-    echo -e "${BLOOD_RED}█ ${GOLD}5${BLOOD_RED} │ ${SILVER}▓▓▓ Claude ${BLOOD_RED}       │ ${GREEN}Anthropic AI                        ${BLOOD_RED}█${NC}"
-    echo -e "${BLOOD_RED}█ ${GOLD}6${BLOOD_RED} │ ${SILVER}▓▓▓ Groq ${BLOOD_RED}         │ ${GREEN}Groq AI Model                       ${BLOOD_RED}█${NC}"
-    echo -e "${BLOOD_RED}█ ${GOLD}7${BLOOD_RED} │ ${SILVER}▓▓▓ Felo ${BLOOD_RED}         │ ${GREEN}Search Assistant                    ${BLOOD_RED}█${NC}"
-    echo -e "${BLOOD_RED}█──────────────────────────────────────────────────────────────█${NC}"
-    echo -e "${BLOOD_RED}█ ${RED}0${BLOOD_RED} │ ${RED}▓▓▓ Exit ${BLOOD_RED}          │ ${RED}Exit Terminal                       ${BLOOD_RED}█${NC}"
-    echo -e "${BLOOD_RED}█ ${RED}9${BLOOD_RED} │ ${RED}▓▓▓ Clear ${BLOOD_RED}         │ ${RED}Clear Screen                        ${BLOOD_RED}█${NC}"
-    echo -e "${BLOOD_RED}█▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█${NC}"
+    echo -e "${BRIGHT_CYAN}${BOLD}╔═══════════════════════════════════════════════════════════════════╗${NC}"
+    echo -e "${BRIGHT_CYAN}${BOLD}║                     🤖 AI MODEL SELECTION 🤖                     ║${NC}"
+    echo -e "${BRIGHT_CYAN}${BOLD}╠═══╦═══════════════════╦═══════════════════════════════════════════╣${NC}"
+    echo -e "${BRIGHT_CYAN}${BOLD}║${NC} ${GOLD}${BOLD}1${NC} ${BRIGHT_CYAN}${BOLD}║${NC} ${BRIGHT_WHITE}${BOLD}🌟 GPT-4o${NC}          ${BRIGHT_CYAN}${BOLD}║${NC} ${YELLOW}⚡ OpenAI Latest Model${NC}                 ${BRIGHT_CYAN}${BOLD}║${NC}"
+    echo -e "${BRIGHT_CYAN}${BOLD}║${NC} ${GOLD}${BOLD}2${NC} ${BRIGHT_CYAN}${BOLD}║${NC} ${BRIGHT_WHITE}${BOLD}🚀 GPT-5${NC}           ${BRIGHT_CYAN}${BOLD}║${NC} ${YELLOW}💫 Next Generation GPT${NC}                ${BRIGHT_CYAN}${BOLD}║${NC}"
+    echo -e "${BRIGHT_CYAN}${BOLD}║${NC} ${GOLD}${BOLD}3${NC} ${BRIGHT_CYAN}${BOLD}║${NC} ${BRIGHT_WHITE}${BOLD}🌐 Gemini${NC}         ${BRIGHT_CYAN}${BOLD}║${NC} ${YELLOW}🔮 Google AI Assistant${NC}                ${BRIGHT_CYAN}${BOLD}║${NC}"
+    echo -e "${BRIGHT_CYAN}${BOLD}║${NC} ${GOLD}${BOLD}4${NC} ${BRIGHT_CYAN}${BOLD}║${NC} ${BRIGHT_WHITE}${BOLD}💻 DeepSeek${NC}       ${BRIGHT_CYAN}${BOLD}║${NC} ${YELLOW}🎯 DeepSeek Coder${NC}                     ${BRIGHT_CYAN}${BOLD}║${NC}"
+    echo -e "${BRIGHT_CYAN}${BOLD}║${NC} ${GOLD}${BOLD}5${NC} ${BRIGHT_CYAN}${BOLD}║${NC} ${BRIGHT_WHITE}${BOLD}🧠 Claude${NC}         ${BRIGHT_CYAN}${BOLD}║${NC} ${YELLOW}⚡ Anthropic AI${NC}                       ${BRIGHT_CYAN}${BOLD}║${NC}"
+    echo -e "${BRIGHT_CYAN}${BOLD}║${NC} ${GOLD}${BOLD}6${NC} ${BRIGHT_CYAN}${BOLD}║${NC} ${BRIGHT_WHITE}${BOLD}⚡ Groq${NC}           ${BRIGHT_CYAN}${BOLD}║${NC} ${YELLOW}🔥 Groq AI Model${NC}                      ${BRIGHT_CYAN}${BOLD}║${NC}"
+    echo -e "${BRIGHT_CYAN}${BOLD}║${NC} ${GOLD}${BOLD}7${NC} ${BRIGHT_CYAN}${BOLD}║${NC} ${BRIGHT_WHITE}${BOLD}🔍 Felo${NC}           ${BRIGHT_CYAN}${BOLD}║${NC} ${YELLOW}🌟 Search Assistant${NC}                   ${BRIGHT_CYAN}${BOLD}║${NC}"
+    echo -e "${BRIGHT_CYAN}${BOLD}╠═══╬═══════════════════╬═══════════════════════════════════════════╣${NC}"
+    echo -e "${BRIGHT_CYAN}${BOLD}║${NC} ${RED}${BOLD}0${NC} ${BRIGHT_CYAN}${BOLD}║${NC} ${RED}${BOLD}❌ Exit${NC}           ${BRIGHT_CYAN}${BOLD}║${NC} ${RED}🚪 Exit Terminal${NC}                      ${BRIGHT_CYAN}${BOLD}║${NC}"
+    echo -e "${BRIGHT_CYAN}${BOLD}║${NC} ${RED}${BOLD}9${NC} ${BRIGHT_CYAN}${BOLD}║${NC} ${RED}${BOLD}🔄 Clear${NC}          ${BRIGHT_CYAN}${BOLD}║${NC} ${RED}🧹 Clear Screen${NC}                       ${BRIGHT_CYAN}${BOLD}║${NC}"
+    echo -e "${BRIGHT_CYAN}${BOLD}╚═══╩═══════════════════╩═══════════════════════════════════════════╝${NC}"
     echo
 }
 
@@ -120,26 +126,26 @@ chat_with_ai() {
     local model=$1
     local model_name=$2
     
-    echo -e "${GOLD}▓ Selected: ${SILVER}$model_name${NC}"
-    echo -e "${GREEN}▓ Type 'back' to return to menu${NC}"
-    echo -e "${BLOOD_RED}════════════════════════════════════════════════════════════════${NC}"
+    echo -e "${GREEN}${BOLD}✅ Selected: ${BRIGHT_WHITE}$model_name${NC}"
+    echo -e "${YELLOW}${BOLD}💡 Type 'back' to return to menu${NC}"
+    echo -e "${DARK_BLUE}${BOLD}═══════════════════════════════════════════════════════════════════${NC}"
     
     while true; do
-        echo -e "${GOLD}"
-        read -p "▓ You: " question
+        echo -e "${BRIGHT_CYAN}${BOLD}"
+        read -p "👤 You: " question
         echo -e "${NC}"
         
         if [[ "$question" == "back" ]]; then
-            echo -e "${YELLOW}▓ Returning to model selection...${NC}"
+            echo -e "${YELLOW}${BOLD}🔙 Returning to model selection...${NC}"
             break
         fi
         
         if [[ -z "$question" ]]; then
-            echo -e "${RED}▓ Question cannot be empty!${NC}"
+            echo -e "${RED}${BOLD}⚠️  Question cannot be empty!${NC}"
             continue
         fi
         
-        echo -e "${BLOOD_RED}▓ Processing request...${NC}"
+        echo -e "${DARK_PURPLE}${BOLD}⏳ Processing request...${NC}"
         progress_bar 12 &
         progress_pid=$!
         
@@ -165,19 +171,19 @@ chat_with_ai() {
         wait $progress_pid 2>/dev/null
         
         if [[ -n "$response" ]]; then
-            echo -e "${SILVER}▓ $model_name: ${WHITE}$response${NC}"
+            echo -e "${GOLD}${BOLD}🤖 $model_name: ${BRIGHT_WHITE}$response${NC}"
         else
-            echo -e "${RED}▓ Failed to get response${NC}"
+            echo -e "${RED}${BOLD}❌ Failed to get response${NC}"
         fi
         
-        echo -e "${BLOOD_RED}════════════════════════════════════════════════════════════════${NC}"
+        echo -e "${DARK_BLUE}${BOLD}═══════════════════════════════════════════════════════════════════${NC}"
     done
 }
 
 main() {
     if ! command -v curl &> /dev/null; then
-        echo -e "${RED}▓ curl is not installed!${NC}"
-        echo -e "${YELLOW}▓ Install with: pkg install curl${NC}"
+        echo -e "${RED}${BOLD}❌ curl is not installed!${NC}"
+        echo -e "${YELLOW}${BOLD}💡 Install with: pkg install curl${NC}"
         exit 1
     fi
     
@@ -185,8 +191,8 @@ main() {
         display_header
         show_models
         
-        echo -e "${GOLD}"
-        read -p "▓ Select option (0-9): " choice
+        echo -e "${BRIGHT_CYAN}${BOLD}"
+        read -p "⚡ Select option (0-9): " choice
         echo -e "${NC}"
         
         case $choice in
@@ -197,14 +203,14 @@ main() {
                 chat_with_ai "groq" "GPT-5 via Groq"
                 ;;
             3)
-                echo -e "${YELLOW}▓ Gemini coming soon...${NC}"
+                echo -e "${YELLOW}${BOLD}⏳ Gemini coming soon...${NC}"
                 sleep 2
                 ;;
             4)
                 chat_with_ai "deepseek" "DeepSeek AI"
                 ;;
             5)
-                echo -e "${YELLOW}▓ Claude coming soon...${NC}"
+                echo -e "${YELLOW}${BOLD}⏳ Claude coming soon...${NC}"
                 sleep 2
                 ;;
             6)
@@ -217,12 +223,12 @@ main() {
                 display_header
                 ;;
             0)
-                echo -e "${GOLD}▓ Thank you for using AI Chat Terminal${NC}"
-                echo -e "${BLOOD_RED}▓ Goodbye!${NC}"
+                echo -e "${GREEN}${BOLD}✨ Thank you for using AI Chat Terminal${NC}"
+                echo -e "${GOLD}${BOLD}👋 Goodbye!${NC}"
                 exit 0
                 ;;
             *)
-                echo -e "${RED}▓ Invalid selection! Choose 0-9${NC}"
+                echo -e "${RED}${BOLD}❌ Invalid selection! Choose 0-9${NC}"
                 sleep 2
                 ;;
         esac
