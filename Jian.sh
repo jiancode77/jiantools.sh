@@ -26,76 +26,34 @@ spinner() {
     printf "    \b\b\b\b"
 }
 
-get_system_info() {
-    system=$(uname -o 2>/dev/null || echo "Android")
-    arch=$(uname -m)
-    
-    if [ -f /proc/version ]; then
-        kernel=$(grep -o 'Linux version [^ ]*' /proc/version | cut -d' ' -f3)
-    else
-        kernel=$(uname -r)
-    fi
-    
-    if [ -f /proc/cpuinfo ]; then
-        cpu=$(grep -m1 -o 'Hardware[^:]*: [^']*' /proc/cpuinfo | cut -d':' -f2 | sed 's/^ //')
-        if [ -z "$cpu" ]; then
-            cpu=$(grep -m1 -o 'processor[^:]*: [^']*' /proc/cpuinfo | head -1)
-        fi
-        cpu_cores=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || echo "8")
-    else
-        cpu="ARM Processor"
-        cpu_cores=$(nproc 2>/dev/null || echo "8")
-    fi
-    
-    if [ -f /proc/meminfo ]; then
-        total_mem_kb=$(grep MemTotal /proc/meminfo | awk '{print $2}')
-        free_mem_kb=$(grep MemAvailable /proc/meminfo | awk '{print $2}')
-        total_mem_mb=$((total_mem_kb / 1024))
-        free_mem_mb=$((free_mem_kb / 1024))
-        used_mem_mb=$((total_mem_mb - free_mem_mb))
-        memory_display="${used_mem_mb}MiB / ${total_mem_mb}MiB"
-    else
-        memory_display="Unknown"
-    fi
-    
-    if [ -f /proc/uptime ]; then
-        uptime_sec=$(awk '{print int($1)}' /proc/uptime)
-        uptime_days=$((uptime_sec / 86400))
-        uptime_hours=$(( (uptime_sec % 86400) / 3600 ))
-        uptime_minutes=$(( (uptime_sec % 3600) / 60 ))
-        if [ $uptime_days -gt 0 ]; then
-            uptime_display="${uptime_days} days, ${uptime_hours} hours"
-        else
-            uptime_display="${uptime_hours} hours, ${uptime_minutes} minutes"
-        fi
-    else
-        uptime_display="Unknown"
-    fi
-    
-    model=$(getprop ro.product.model 2>/dev/null || echo "Mobile Device")
-    brand=$(getprop ro.product.brand 2>/dev/null || echo "Unknown")
-    android_version=$(getprop ro.build.version.release 2>/dev/null || echo "Unknown")
-    
-    if [ "$system" = "Android" ]; then
-        system_display="Android ${android_version}"
-        cpu_display="${cpu} (${cpu_cores})"
-        device_display="${brand} ${model}"
-    else
-        system_display="$system"
-        cpu_display="${cpu} (${cpu_cores})"
-        device_display="Mobile Device"
-    fi
+display_banner() {
+    echo -e "${CYAN}"
+    echo "          _______  "
+    echo "         /       / "
+    echo "___     /   ____/   "
+    echo ":   :  /   /:       "
+    echo " :   :/___/  :      "
+    echo "  :       :   :     "
+    echo "   :_______:   :    StarsXTools v4.0"
+    echo "           /   /    Owner:  JianCode"
+    echo "          /   /     Premium: false"
+    echo "          :  /      TELEGRAM @ JianCode"
+    echo "           :/       "
+    echo -e "${NC}"
 }
 
-display_header() {
-    get_system_info
-    echo -e "${BLUE}────────────────────────────────────────────────────────────────${NC}"
-    printf "${BLUE}│ ${GREEN}◉ ${WHITE}System: %-45s ${BLUE}│${NC}\n" "$system_display"
-    printf "${BLUE}│ ${GREEN}◉ ${WHITE}Device: %-45s ${BLUE}│${NC}\n" "$device_display"
-    printf "${BLUE}│ ${GREEN}◉ ${WHITE}CPU: %-48s ${BLUE}│${NC}\n" "$cpu_display"
-    printf "${BLUE}│ ${GREEN}◉ ${WHITE}Memory: %-46s ${BLUE}│${NC}\n" "$memory_display"
-    printf "${BLUE}│ ${GREEN}◉ ${WHITE}Uptime: %-46s ${BLUE}│${NC}\n" "$uptime_display"
-    echo -e "${BLUE}────────────────────────────────────────────────────────────────${NC}"
+display_neofetch() {
+    if command -v neofetch &> /dev/null; then
+        neofetch
+    else
+        echo -e "${YELLOW}◉ Installing neofetch...${NC}"
+        pkg install neofetch -y &> /dev/null
+        if command -v neofetch &> /dev/null; then
+            neofetch
+        else
+            echo -e "${RED}◉ Failed to install neofetch${NC}"
+        fi
+    fi
     echo
 }
 
@@ -313,7 +271,9 @@ chat_with_ai() {
 
 ai_chat_menu() {
     while true; do
-        display_header
+        clear
+        display_banner
+        display_neofetch
         show_ai_menu
         
         echo -e "${CYAN}"
@@ -352,7 +312,9 @@ main() {
     fi
     
     while true; do
-        display_header
+        clear
+        display_banner
+        display_neofetch
         show_tools_menu
         
         echo -e "${PURPLE}"
