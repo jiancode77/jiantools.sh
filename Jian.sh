@@ -25,7 +25,7 @@ show_banner() {
     echo "║   ╚══════╝ ╚═════╝ ╚═════╝ ╚═════╝  ╚═════╝                ║"
     echo "║                                                              ║"
     echo "║           SUBDOMAIN & PTERODACTYL CREATOR V2.0               ║"
-    echo "║                  Created By VinnOfficial                     ║"
+    echo "║                  Created By JianxRyn2ND                     ║"
     echo "║                                                              ║"
     echo "╚══════════════════════════════════════════════════════════════╝"
     echo -e "${NC}"
