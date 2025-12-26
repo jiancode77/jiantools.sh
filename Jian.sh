@@ -3,499 +3,367 @@
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-PURPLE='\033[0;35m'
 CYAN='\033[0;36m'
-WHITE='\033[1;37m'
-ORANGE='\033[38;5;208m'
-MAGENTA='\033[38;5;165m'
-TEAL='\033[38;5;51m'
+MAGENTA='\033[0;35m'
 NC='\033[0m'
+
+PASSWORD=$(echo "SmlhbkNvZGUjMzEy" | base64 -d)
+
+PANEL_URL=""
+API_KEY=""
+
+show_banner() {
+    clear
+    echo -e "${CYAN}"
+    echo "╔══════════════════════════════════════════════════════════════╗"
+    echo "║                                                              ║"
+    echo "║   ███████╗██╗   ██╗██████╗ ██████╗  ██████╗                ║"
+    echo "║   ██╔════╝██║   ██║██╔══██╗██╔══██╗██╔═══██╗               ║"
+    echo "║   ███████╗██║   ██║██████╔╝██║  ██║██║   ██║               ║"
+    echo "║   ╚════██║██║   ██║██╔══██╗██║  ██║██║   ██║               ║"
+    echo "║   ███████║╚██████╔╝██████╔╝██████╔╝╚██████╔╝               ║"
+    echo "║   ╚══════╝ ╚═════╝ ╚═════╝ ╚═════╝  ╚═════╝                ║"
+    echo "║                                                              ║"
+    echo "║           SUBDOMAIN & PTERODACTYL CREATOR V2.0               ║"
+    echo "║                  Created By VinnOfficial                     ║"
+    echo "║                                                              ║"
+    echo "╚══════════════════════════════════════════════════════════════╝"
+    echo -e "${NC}"
+}
 
 spinner() {
     local pid=$1
-    local delay=0.2
-    local spinstr=('⠋' '⠙' '⠹' '⠸' '⠼' '⠴' '⠦' '⠧' '⠇' '⠏')
+    local delay=0.1
+    local spinstr='⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏'
     while [ "$(ps a | awk '{print $1}' | grep $pid)" ]; do
-        for i in "${spinstr[@]}"; do
-            printf " [%s] " "$i"
-            sleep $delay
-            printf "\b\b\b\b\b"
-        done
+        local temp=${spinstr#?}
+        printf " [%c]  " "$spinstr"
+        local spinstr=$temp${spinstr%"$temp"}
+        sleep $delay
+        printf "\b\b\b\b\b\b"
     done
     printf "    \b\b\b\b"
 }
 
-display_neofetch() {
-    neofetch --ascii_distro linux
-    echo -e "${BLUE}────────────────────────────────────────────────────────────────${NC}"
+list_domains() {
+    echo -e "${CYAN}"
+    echo "╔═══════════════════════════════════════════════════╗"
+    echo "║            DAFTAR DOMAIN TERSEDIA                 ║"
+    echo "╚═══════════════════════════════════════════════════╝"
+    echo -e "${NC}"
+    echo -e "${YELLOW}  01.${NC} pterodactyl-panel.web.id"
+    echo -e "${YELLOW}  02.${NC} storedigital.web.id"
+    echo -e "${YELLOW}  03.${NC} storeid.my.id"
+    echo -e "${YELLOW}  04.${NC} store-panell.my.id"
+    echo -e "${YELLOW}  05.${NC} xyro.web.id"
+    echo -e "${YELLOW}  06.${NC} xyroku.my.id"
+    echo -e "${YELLOW}  07.${NC} gacorr.biz.id"
+    echo -e "${YELLOW}  08.${NC} cafee.my.id"
+    echo -e "${YELLOW}  09.${NC} pterodaytl.my.id"
+    echo -e "${YELLOW}  10.${NC} googlex.my.id"
+    echo -e "${YELLOW}  11.${NC} heavencraft.my.id"
+    echo -e "${YELLOW}  12.${NC} hilman-store.web.id"
+    echo -e "${YELLOW}  13.${NC} hilmanofficial.tech"
+    echo -e "${YELLOW}  14.${NC} hilmanzoffc.web.id"
+    echo -e "${YELLOW}  15.${NC} host-panel.web.id"
+    echo -e "${YELLOW}  16.${NC} hostingers-vvip.my.id"
+    echo ""
+}
+
+get_domain_config() {
+    case $1 in
+        1) DOMAIN="pterodactyl-panel.web.id"; ZONE="d69feb7345d9e4dd5cfd7cce29e7d5b0"; TOKEN="32zZwadzwc7qB4mzuDBJkk1xFyoQ2Grr27mAfJcB" ;;
+        2) DOMAIN="storedigital.web.id"; ZONE="2ce8a2f880534806e2f463e3eec68d31"; TOKEN="v5_unJTqruXV_x-5uj0dT5_Q4QAPThJbXzC2MmOQ" ;;
+        3) DOMAIN="storeid.my.id"; ZONE="c651c828a01962eb3c530513c7ad7dcf"; TOKEN="N-D6fN6la7jY0AnvbWn9FcU6ZHuDitmFXd-JF04g" ;;
+        4) DOMAIN="store-panell.my.id"; ZONE="0189ecfadb9cf2c4a311c0a3ec8f0d5c"; TOKEN="eVI-BXIXNEQtBqLpdvuitAR5nXC2bLj6jw365JPZ" ;;
+        5) DOMAIN="xyro.web.id"; ZONE="46d0cd33a7966f0be5afdab04b63e695"; TOKEN="CygwSHXRSfZnsi1qZmyB8s4qHC12jX_RR4mTpm62" ;;
+        6) DOMAIN="xyroku.my.id"; ZONE="f6d1a73a272e6e770a232c39979d5139"; TOKEN="0Mae_Rtx1ixGYenzFcNG9bbPd-rWjoRwqN2tvNzo" ;;
+        7) DOMAIN="gacorr.biz.id"; ZONE="cff22ce1965394f1992c8dba4c3db539"; TOKEN="v9kYfj5g2lcacvBaJHA_HRgNqBi9UlsVy0cm_EhT" ;;
+        8) DOMAIN="cafee.my.id"; ZONE="0d7044fc3e0d66189724952fa3b850ce"; TOKEN="wAOEzAfvb-L3vKYE2Xg8svJpHfNS_u2noWSReSzJ" ;;
+        9) DOMAIN="pterodaytl.my.id"; ZONE="828ef14600aaaa0b1ea881dd0e7972b2"; TOKEN="75HrVBzSVObD611RkuNS1ZKsL5A_b8kuiCs26-f9" ;;
+        10) DOMAIN="googlex.my.id"; ZONE="dda9e25dac2556c7494470ee6152fc7f"; TOKEN="GuT5rNQSr_V2kxb-QZdJ4YbFlEvzE-upzhey9Ezl" ;;
+        11) DOMAIN="heavencraft.my.id"; ZONE="9e7239dcda7cbd6be79d7615257f56f8"; TOKEN="aHvYYKk7YIADVOfpG3i1eaIqTeWCdPS25FAPreDQ" ;;
+        12) DOMAIN="hilman-store.web.id"; ZONE="4e214dfe36faa7c942bc68b5aecdd1e9"; TOKEN="wpQCANKLRAtWb0XvTRed3vwSkOMMWKO2C75uwnKE" ;;
+        13) DOMAIN="hilmanofficial.tech"; ZONE="c8705bfbfdca9c4e8e61eb2663ee87d6"; TOKEN="hjqWa_eFAfoJNJyBu9WAlg8WO0ICtN5AYpZURgqe" ;;
+        14) DOMAIN="hilmanzoffc.web.id"; ZONE="2627badfda28951bfb936fce0febc5b0"; TOKEN="wZ3QAKn7zDx-tyb04HgCvmogqeM6je8jDNmiPZXq" ;;
+        15) DOMAIN="host-panel.web.id"; ZONE="74b3192f7c3b0925cdb8606bb7db95c4"; TOKEN="GuT5rNQSr_V2kxb-QZdJ4YbFlEvzE-upzhey9Ezl" ;;
+        16) DOMAIN="hostingers-vvip.my.id"; ZONE="2341ae01634b852230b7521af26c261f"; TOKEN="Ztw1ouD8_lJf-QzRecgmijjsDJODFU4b-y697lPw" ;;
+        *) return 1 ;;
+    esac
+    return 0
+}
+
+create_subdomain() {
+    local HOST=$1
+    local IP=$2
+    local ZONE=$3
+    local TOKEN=$4
+    local DOMAIN=$5
     
-    total_users=$(curl -s "https://api.countapi.xyz/hit/jiantools.sh/total" | grep -o '"value":[0-9]*' | sed 's/"value"://')
-    if [[ -n "$total_users" ]]; then
-        echo -e "${GREEN}◉ Total Users: ${WHITE}$total_users${NC}"
+    RESPONSE=$(curl -s -X POST "https://api.cloudflare.com/client/v4/zones/$ZONE/dns_records" \
+        -H "Authorization: Bearer $TOKEN" \
+        -H "Content-Type: application/json" \
+        --data "{\"type\":\"A\",\"name\":\"$HOST\",\"content\":\"$IP\",\"ttl\":1,\"proxied\":false}")
+    
+    if echo "$RESPONSE" | grep -q '"success":true'; then
+        echo "success|$HOST.$DOMAIN|$IP"
     else
-        echo -e "${GREEN}◉ Total Users: ${WHITE}Loading...${NC}"
+        ERROR=$(echo "$RESPONSE" | grep -o '"message":"[^"]*"' | head -1 | cut -d'"' -f4)
+        echo "error|$ERROR"
     fi
-    echo
 }
 
-show_ai_menu() {
-    echo -e "${CYAN}────────────────────────────────────────────────────────────────${NC}"
-    echo -e "${CYAN}│                      JIAN AI CHAT MENU                     │${NC}"
-    echo -e "${CYAN}────────────────────────────────────────────────────────────────${NC}"
-    echo -e "${CYAN}│ ${GREEN}1${CYAN} │ ${WHITE}◈ GPT-4o ${CYAN}         │ ${YELLOW}OpenAI Latest Model               ${CYAN}│${NC}"
-    echo -e "${CYAN}│ ${GREEN}2${CYAN} │ ${WHITE}◈ DeepSeek ${CYAN}       │ ${YELLOW}DeepSeek Coder                    ${CYAN}│${NC}"
-    echo -e "${CYAN}│ ${GREEN}3${CYAN} │ ${WHITE}◈ Groq ${CYAN}           │ ${YELLOW}Groq AI Model                     ${CYAN}│${NC}"
-    echo -e "${CYAN}│ ${GREEN}4${CYAN} │ ${WHITE}◈ Felo ${CYAN}           │ ${YELLOW}Search Assistant                  ${CYAN}│${NC}"
-    echo -e "${CYAN}│                                                        │${NC}"
-    echo -e "${CYAN}│ ${RED}0${CYAN} │ ${RED}◉ Back ${CYAN}           │ ${RED}Back to Main Menu                 ${CYAN}│${NC}"
-    echo -e "${CYAN}────────────────────────────────────────────────────────────────${NC}"
-    echo
+create_location() {
+    local NAME=$1
+    local SHORT=$(echo "$NAME" | cut -c1-8 | tr '[:lower:]' '[:upper:]')
+    
+    RESPONSE=$(curl -s -X POST "$PANEL_URL/api/application/locations" \
+        -H "Authorization: Bearer $API_KEY" \
+        -H "Content-Type: application/json" \
+        -H "Accept: application/json" \
+        --data "{\"short\":\"$SHORT\",\"long\":\"$NAME\"}")
+    
+    if echo "$RESPONSE" | grep -q '"object":"location"'; then
+        LOCATION_ID=$(echo "$RESPONSE" | grep -o '"id":[0-9]*' | head -1 | cut -d':' -f2)
+        echo "success|$LOCATION_ID"
+    else
+        ERROR=$(echo "$RESPONSE" | grep -o '"detail":"[^"]*"' | head -1 | cut -d'"' -f4)
+        echo "error|$ERROR"
+    fi
 }
 
-show_tools_menu() {
-    echo -e "${PURPLE}────────────────────────────────────────────────────────────────${NC}"
-    echo -e "${PURPLE}│                    JIAN TOOLS MENU                       │${NC}"
-    echo -e "${PURPLE}────────────────────────────────────────────────────────────────${NC}"
-    echo -e "${PURPLE}│ ${GREEN}1${PURPLE} │ ${WHITE}◈ NIK Checker ${PURPLE}    │ ${YELLOW}Check NIK Information              ${PURPLE}│${NC}"
-    echo -e "${PURPLE}│ ${GREEN}2${PURPLE} │ ${WHITE}◈ NGL Spammer ${PURPLE}    │ ${YELLOW}Send Anonymous Messages           ${PURPLE}│${NC}"
-    echo -e "${PURPLE}│ ${GREEN}3${PURPLE} │ ${WHITE}◈ IG Stalk ${PURPLE}       │ ${YELLOW}Instagram Profile Stalker          ${PURPLE}│${NC}"
-    echo -e "${PURPLE}│ ${GREEN}4${PURPLE} │ ${WHITE}◈ TikTok Stalk ${PURPLE}   │ ${YELLOW}TikTok Profile Stalker             ${PURPLE}│${NC}"
-    echo -e "${PURPLE}│ ${GREEN}5${PURPLE} │ ${WHITE}◈ YouTube Stalk ${PURPLE}  │ ${YELLOW}YouTube Channel Stalker            ${PURPLE}│${NC}"
-    echo -e "${PURPLE}│                                                        │${NC}"
-    echo -e "${PURPLE}│ ${GREEN}6${PURPLE} │ ${WHITE}◈ AI Chat ${PURPLE}        │ ${YELLOW}Open AI Chat Menu                 ${PURPLE}│${NC}"
-    echo -e "${PURPLE}│ ${RED}0${PURPLE} │ ${RED}◉ Exit ${PURPLE}           │ ${RED}Exit Terminal                       ${PURPLE}│${NC}"
-    echo -e "${PURPLE}────────────────────────────────────────────────────────────────${NC}"
-    echo
+create_node() {
+    local NODE_NAME=$1
+    local FQDN=$2
+    local RAM=$3
+    local DISK=$4
+    local LOCATION_ID=$5
+    
+    RESPONSE=$(curl -s -X POST "$PANEL_URL/api/application/nodes" \
+        -H "Authorization: Bearer $API_KEY" \
+        -H "Content-Type: application/json" \
+        -H "Accept: application/json" \
+        --data "{
+            \"name\":\"$NODE_NAME\",
+            \"description\":\"Auto created node for $NODE_NAME\",
+            \"location_id\":$LOCATION_ID,
+            \"fqdn\":\"$FQDN\",
+            \"scheme\":\"https\",
+            \"memory\":$RAM,
+            \"memory_overallocate\":0,
+            \"disk\":$DISK,
+            \"disk_overallocate\":0,
+            \"upload_size\":100,
+            \"daemon_sftp\":2022,
+            \"daemon_listen\":8080
+        }")
+    
+    if echo "$RESPONSE" | grep -q '"object":"node"'; then
+        NODE_ID=$(echo "$RESPONSE" | grep -o '"id":[0-9]*' | head -1 | cut -d':' -f2)
+        echo "success|$NODE_ID"
+    else
+        ERROR=$(echo "$RESPONSE" | grep -o '"detail":"[^"]*"' | head -1 | cut -d'"' -f4)
+        echo "error|$ERROR"
+    fi
 }
 
-call_gpt4o() {
-    local question=$1
-    local encoded=$(echo "$question" | sed 's/ /%20/g')
-    response=$(curl -s "https://piereeapi.vercel.app/ai/gpt4o?prompt=$encoded")
-    echo "$response" | grep -o '"result":"[^"]*' | sed 's/"result":"//'
-}
-
-call_groq() {
-    local question=$1
-    local encoded=$(echo "$question" | sed 's/ /%20/g')
-    response=$(curl -s "https://piereeapi.vercel.app/ai/groq?text=$encoded")
-    echo "$response" | grep -o '"text":"[^"]*' | sed 's/"text":"//'
-}
-
-call_deepseek() {
-    local question=$1
-    local encoded=$(echo "$question" | sed 's/ /%20/g')
-    response=$(curl -s "https://piereeapi.vercel.app/ai/deepseek?text=$encoded&model=depsekk-v2")
-    echo "$response" | grep -o '"response":"[^"]*' | sed 's/"response":"//'
-}
-
-call_felo() {
-    local question=$1
-    local encoded=$(echo "$question" | sed 's/ /%20/g')
-    response=$(curl -s "https://piereeapi.vercel.app/ai/felo?query=$encoded")
-    echo "$response" | grep -o '"answer":"[^"]*' | sed 's/"answer":"//' | sed 's/\\n/ /g'
-}
-
-check_nik() {
-    echo -e "${GREEN}◉ NIK Checker Tool${NC}"
-    echo -e "${YELLOW}◉ Enter NIK number:${NC}"
+setup_pterodactyl() {
     echo -e "${CYAN}"
-    read -p "◉ NIK: " nik
+    echo "╔═══════════════════════════════════════════════════╗"
+    echo "║          SETUP PTERODACTYL CONFIGURATION          ║"
+    echo "╚═══════════════════════════════════════════════════╝"
     echo -e "${NC}"
     
-    if [[ -z "$nik" ]]; then
-        echo -e "${RED}◉ NIK cannot be empty!${NC}"
-        echo -e "${PURPLE}────────────────────────────────────────────────────────────────${NC}"
+    read -p "  Panel URL (https://panel.example.com): " PANEL_URL
+    read -p "  API Key: " API_KEY
+    
+    PANEL_URL=$(echo "$PANEL_URL" | sed 's:/*$::')
+    
+    echo -e "${GREEN}\n✓ Konfigurasi Pterodactyl berhasil disimpan!${NC}\n"
+    read -p "Tekan Enter untuk kembali..."
+}
+
+auto_pterodactyl_mode() {
+    if [ -z "$PANEL_URL" ] || [ -z "$API_KEY" ]; then
+        echo -e "${RED}\n✗ Konfigurasi Pterodactyl belum diatur!${NC}\n"
+        setup_pterodactyl
         return
     fi
     
-    echo -e "${BLUE}◉ Checking NIK information...${NC}"
-    
-    (
-        response=$(curl -s "https://api.siputzx.my.id/api/tools/nik-checker?nik=$nik")
-        
-        printf "\r\033[K"
-        
-        if echo "$response" | grep -q '"status":true'; then
-            nama=$(echo "$response" | grep -o '"nama":"[^"]*' | sed 's/"nama":"//')
-            kelamin=$(echo "$response" | grep -o '"kelamin":"[^"]*' | sed 's/"kelamin":"//')
-            tempat_lahir=$(echo "$response" | grep -o '"tempat_lahir":"[^"]*' | sed 's/"tempat_lahir":"//')
-            usia=$(echo "$response" | grep -o '"usia":"[^"]*' | sed 's/"usia":"//')
-            provinsi=$(echo "$response" | grep -o '"provinsi":"[^"]*' | sed 's/"provinsi":"//')
-            kabupaten=$(echo "$response" | grep -o '"kabupaten":"[^"]*' | sed 's/"kabupaten":"//')
-            kecamatan=$(echo "$response" | grep -o '"kecamatan":"[^"]*' | sed 's/"kecamatan":"//')
-            kelurahan=$(echo "$response" | grep -o '"kelurahan":"[^"]*' | sed 's/"kelurahan":"//')
-            alamat=$(echo "$response" | grep -o '"alamat":"[^"]*' | sed 's/"alamat":"//')
-            
-            echo -e "${TEAL}◉ NIK Information:${NC}"
-            echo -e "${WHITE}  Nama: $nama${NC}"
-            echo -e "${WHITE}  Jenis Kelamin: $kelamin${NC}"
-            echo -e "${WHITE}  Tempat/Tgl Lahir: $tempat_lahir${NC}"
-            echo -e "${WHITE}  Usia: $usia${NC}"
-            echo -e "${WHITE}  Provinsi: $provinsi${NC}"
-            echo -e "${WHITE}  Kabupaten: $kabupaten${NC}"
-            echo -e "${WHITE}  Kecamatan: $kecamatan${NC}"
-            echo -e "${WHITE}  Kelurahan: $kelurahan${NC}"
-            echo -e "${WHITE}  Alamat: $alamat${NC}"
-        else
-            echo -e "${RED}◉ Failed to get NIK information${NC}"
-        fi
-        
-        echo -e "${PURPLE}────────────────────────────────────────────────────────────────${NC}"
-    ) &
-    
-    local pid=$!
-    spinner $pid
-    wait $pid
-}
-
-ngl_spammer() {
-    echo -e "${GREEN}◉ NGL Spammer Tool${NC}"
-    echo -e "${YELLOW}◉ Enter target username/URL:${NC}"
     echo -e "${CYAN}"
-    read -p "◉ Target: " target
+    echo "╔═══════════════════════════════════════════════════╗"
+    echo "║        AUTO CREATE SUBDOMAIN + NODE MODE          ║"
+    echo "╚═══════════════════════════════════════════════════╝"
     echo -e "${NC}"
     
-    echo -e "${YELLOW}◉ Enter message:${NC}"
-    echo -e "${CYAN}"
-    read -p "◉ Message: " message
-    echo -e "${NC}"
+    read -p "  Node Name: " NODE_NAME
+    read -p "  Hostname (untuk subdomain): " HOST
+    read -p "  IP VPS: " IP
+    read -p "  RAM (MB): " RAM
+    read -p "  Disk (MB): " DISK
     
-    echo -e "${YELLOW}◉ Enter number of spam:${NC}"
-    echo -e "${CYAN}"
-    read -p "◉ Count: " count
-    echo -e "${NC}"
+    list_domains
+    read -p "  Pilih nomor domain: " DOMAIN_CHOICE
     
-    if [[ -z "$target" || -z "$message" || -z "$count" ]]; then
-        echo -e "${RED}◉ All fields are required!${NC}"
-        echo -e "${PURPLE}────────────────────────────────────────────────────────────────${NC}"
+    get_domain_config $DOMAIN_CHOICE
+    if [ $? -ne 0 ]; then
+        echo -e "${RED}\n✗ Domain tidak ditemukan!${NC}\n"
+        read -p "Tekan Enter untuk kembali..."
         return
     fi
     
-    echo -e "${BLUE}◉ Sending $count messages...${NC}"
+    echo ""
+    echo -e "${YELLOW}⏳ Membuat subdomain...${NC}"
+    SUBDOMAIN_RESULT=$(create_subdomain "$HOST" "$IP" "$ZONE" "$TOKEN" "$DOMAIN")
     
-    (
-        encoded_target=$(echo "$target" | sed 's/ /%20/g')
-        encoded_message=$(echo "$message" | sed 's/ /%20/g')
-        
-        for ((i=1; i<=count; i++)); do
-            response=$(curl -s "https://piereeapi.vercel.app/tools/ngl?user=$encoded_target&msg=$encoded_message")
-            echo -e "${GREEN}◉ Message $i sent${NC}"
-            sleep 1
-        done
-        
-        echo -e "${TEAL}◉ Successfully sent $count messages to $target${NC}"
-        echo -e "${PURPLE}────────────────────────────────────────────────────────────────${NC}"
-    ) &
-    
-    local pid=$!
-    spinner $pid
-    wait $pid
-}
-
-stalk_instagram() {
-    echo -e "${GREEN}◉ Instagram Stalker Tool${NC}"
-    echo -e "${YELLOW}◉ Enter Instagram username:${NC}"
-    echo -e "${CYAN}"
-    read -p "◉ Username: " username
-    echo -e "${NC}"
-    
-    if [[ -z "$username" ]]; then
-        echo -e "${RED}◉ Username cannot be empty!${NC}"
-        echo -e "${PURPLE}────────────────────────────────────────────────────────────────${NC}"
+    if echo "$SUBDOMAIN_RESULT" | grep -q "^success"; then
+        FULL_DOMAIN=$(echo "$SUBDOMAIN_RESULT" | cut -d'|' -f2)
+        USED_IP=$(echo "$SUBDOMAIN_RESULT" | cut -d'|' -f3)
+        echo -e "${GREEN}✓ Subdomain berhasil dibuat!${NC}"
+    else
+        ERROR=$(echo "$SUBDOMAIN_RESULT" | cut -d'|' -f2)
+        echo -e "${RED}✗ Gagal membuat subdomain: $ERROR${NC}\n"
+        read -p "Tekan Enter untuk kembali..."
         return
     fi
     
-    echo -e "${BLUE}◉ Fetching Instagram profile...${NC}"
+    echo -e "${YELLOW}⏳ Membuat location di Pterodactyl...${NC}"
+    LOCATION_RESULT=$(create_location "$NODE_NAME")
     
-    (
-        response=$(curl -s "https://piereeapi.vercel.app/stalk/instagram?username=$username")
-        
-        printf "\r\033[K"
-        
-        if echo "$response" | grep -q '"status":true'; then
-            full_name=$(echo "$response" | grep -o '"full_name":"[^"]*' | sed 's/"full_name":"//')
-            biography=$(echo "$response" | grep -o '"biography":"[^"]*' | sed 's/"biography":"//')
-            is_verified=$(echo "$response" | grep -o '"is_verified":[^,]*' | sed 's/"is_verified"://')
-            followers=$(echo "$response" | grep -o '"followers_count":[^,]*' | sed 's/"followers_count"://')
-            following=$(echo "$response" | grep -o '"following_count":[^,]*' | sed 's/"following_count"://')
-            posts=$(echo "$response" | grep -o '"posts_count":[^,]*' | sed 's/"posts_count"://')
-            
-            echo -e "${TEAL}◉ Instagram Profile:${NC}"
-            echo -e "${WHITE}  Username: @$username${NC}"
-            echo -e "${WHITE}  Full Name: $full_name${NC}"
-            echo -e "${WHITE}  Biography: $biography${NC}"
-            if [[ "$is_verified" == "true" ]]; then
-                echo -e "${WHITE}  Verified: ${GREEN}Yes${NC}"
-            else
-                echo -e "${WHITE}  Verified: ${RED}No${NC}"
-            fi
-            echo -e "${WHITE}  Followers: $followers${NC}"
-            echo -e "${WHITE}  Following: $following${NC}"
-            echo -e "${WHITE}  Posts: $posts${NC}"
-        else
-            echo -e "${RED}◉ Failed to get Instagram profile${NC}"
-        fi
-        
-        echo -e "${PURPLE}────────────────────────────────────────────────────────────────${NC}"
-    ) &
-    
-    local pid=$!
-    spinner $pid
-    wait $pid
-}
-
-stalk_tiktok() {
-    echo -e "${GREEN}◉ TikTok Stalker Tool${NC}"
-    echo -e "${YELLOW}◉ Enter TikTok username:${NC}"
-    echo -e "${CYAN}"
-    read -p "◉ Username: " username
-    echo -e "${NC}"
-    
-    if [[ -z "$username" ]]; then
-        echo -e "${RED}◉ Username cannot be empty!${NC}"
-        echo -e "${PURPLE}────────────────────────────────────────────────────────────────${NC}"
+    if echo "$LOCATION_RESULT" | grep -q "^success"; then
+        LOCATION_ID=$(echo "$LOCATION_RESULT" | cut -d'|' -f2)
+        echo -e "${GREEN}✓ Location berhasil dibuat!${NC}"
+    else
+        ERROR=$(echo "$LOCATION_RESULT" | cut -d'|' -f2)
+        echo -e "${RED}✗ Gagal membuat location: $ERROR${NC}\n"
+        read -p "Tekan Enter untuk kembali..."
         return
     fi
     
-    echo -e "${BLUE}◉ Fetching TikTok profile...${NC}"
+    echo -e "${YELLOW}⏳ Membuat node di Pterodactyl...${NC}"
+    NODE_RESULT=$(create_node "$NODE_NAME" "$FULL_DOMAIN" "$RAM" "$DISK" "$LOCATION_ID")
     
-    (
-        response=$(curl -s "https://piereeapi.vercel.app/stalk/tiktok?username=$username")
+    if echo "$NODE_RESULT" | grep -q "^success"; then
+        NODE_ID=$(echo "$NODE_RESULT" | cut -d'|' -f2)
+        echo -e "${GREEN}✓ Node berhasil dibuat!${NC}"
         
-        printf "\r\033[K"
-        
-        if echo "$response" | grep -q '"status":true'; then
-            nickname=$(echo "$response" | grep -o '"nickname":"[^"]*' | sed 's/"nickname":"//')
-            signature=$(echo "$response" | grep -o '"signature":"[^"]*' | sed 's/"signature":"//')
-            verified=$(echo "$response" | grep -o '"verified":[^,]*' | sed 's/"verified"://')
-            followers=$(echo "$response" | grep -o '"followerCount":"[^"]*' | sed 's/"followerCount":"//')
-            following=$(echo "$response" | grep -o '"followingCount":"[^"]*' | sed 's/"followingCount":"//')
-            videos=$(echo "$response" | grep -o '"videoCount":"[^"]*' | sed 's/"videoCount":"//')
-            hearts=$(echo "$response" | grep -o '"heartCount":"[^"]*' | sed 's/"heartCount":"//')
-            
-            echo -e "${TEAL}◉ TikTok Profile:${NC}"
-            echo -e "${WHITE}  Username: @$username${NC}"
-            echo -e "${WHITE}  Nickname: $nickname${NC}"
-            echo -e "${WHITE}  Bio: $signature${NC}"
-            if [[ "$verified" == "true" ]]; then
-                echo -e "${WHITE}  Verified: ${GREEN}Yes${NC}"
-            else
-                echo -e "${WHITE}  Verified: ${RED}No${NC}"
-            fi
-            echo -e "${WHITE}  Followers: $followers${NC}"
-            echo -e "${WHITE}  Following: $following${NC}"
-            echo -e "${WHITE}  Videos: $videos${NC}"
-            echo -e "${WHITE}  Hearts: $hearts${NC}"
-        else
-            echo -e "${RED}◉ Failed to get TikTok profile${NC}"
-        fi
-        
-        echo -e "${PURPLE}────────────────────────────────────────────────────────────────${NC}"
-    ) &
-    
-    local pid=$!
-    spinner $pid
-    wait $pid
-}
-
-stalk_youtube() {
-    echo -e "${GREEN}◉ YouTube Stalker Tool${NC}"
-    echo -e "${YELLOW}◉ Enter YouTube username/channel ID:${NC}"
-    echo -e "${CYAN}"
-    read -p "◉ Username: " username
-    echo -e "${NC}"
-    
-    if [[ -z "$username" ]]; then
-        echo -e "${RED}◉ Username cannot be empty!${NC}"
-        echo -e "${PURPLE}────────────────────────────────────────────────────────────────${NC}"
-        return
-    fi
-    
-    echo -e "${BLUE}◉ Fetching YouTube channel...${NC}"
-    
-    (
-        response=$(curl -s "https://piereeapi.vercel.app/stalk/youtube?username=$username")
-        
-        printf "\r\033[K"
-        
-        if echo "$response" | grep -q '"status":true'; then
-            channel_name=$(echo "$response" | grep -o '"username":"[^"]*' | sed 's/"username":"//')
-            subscribers=$(echo "$response" | grep -o '"subscriberCount":"[^"]*' | sed 's/"subscriberCount":"//')
-            video_count=$(echo "$response" | grep -o '"videoCount":"[^"]*' | sed 's/"videoCount":"//')
-            description=$(echo "$response" | grep -o '"description":"[^"]*' | sed 's/"description":"//' | head -1)
-            
-            echo -e "${TEAL}◉ YouTube Channel:${NC}"
-            echo -e "${WHITE}  Channel: $channel_name${NC}"
-            echo -e "${WHITE}  Subscribers: $subscribers${NC}"
-            echo -e "${WHITE}  Videos: $video_count${NC}"
-            echo -e "${WHITE}  Description: $description${NC}"
-            
-            echo -e "${YELLOW}◉ Latest Videos:${NC}"
-            for i in {0..4}; do
-                title=$(echo "$response" | grep -o '"title":"[^"]*' | sed 's/"title":"//' | sed -n "$((i+1))p")
-                views=$(echo "$response" | grep -o '"viewCount":"[^"]*' | sed 's/"viewCount":"//' | sed -n "$((i+1))p")
-                if [[ -n "$title" ]]; then
-                    echo -e "${WHITE}  $((i+1)). $title${NC}"
-                    echo -e "${CYAN}     👁️  $views${NC}"
-                fi
-            done
-        else
-            echo -e "${RED}◉ Failed to get YouTube channel${NC}"
-        fi
-        
-        echo -e "${PURPLE}────────────────────────────────────────────────────────────────${NC}"
-    ) &
-    
-    local pid=$!
-    spinner $pid
-    wait $pid
-}
-
-chat_with_ai() {
-    local model=$1
-    local model_name=$2
-    
-    echo -e "${GREEN}◉ Selected: ${WHITE}$model_name${NC}"
-    echo -e "${YELLOW}◉ Type 'back' to return to menu${NC}"
-    echo -e "${CYAN}────────────────────────────────────────────────────────────────${NC}"
-    
-    while true; do
-        echo -e "${WHITE}"
-        read -p "◉ You: " question
+        echo -e "${GREEN}"
+        echo "╔═══════════════════════════════════════════════════════════╗"
+        echo "║           PTERODACTYL NODE BERHASIL DIBUAT                ║"
+        echo "╚═══════════════════════════════════════════════════════════╝"
         echo -e "${NC}"
-        
-        if [[ "$question" == "back" ]]; then
-            echo -e "${YELLOW}◉ Returning to AI menu...${NC}"
-            break
-        fi
-        
-        if [[ -z "$question" ]]; then
-            echo -e "${RED}◉ Question cannot be empty!${NC}"
-            continue
-        fi
-        
-        echo -e "${BLUE}◉ Processing request...${NC}"
-        
-        (
-            case $model in
-                "gpt4o")
-                    response=$(call_gpt4o "$question")
-                    ;;
-                "groq")
-                    response=$(call_groq "$question")
-                    ;;
-                "deepseek")
-                    response=$(call_deepseek "$question")
-                    ;;
-                "felo")
-                    response=$(call_felo "$question")
-                    ;;
-                *)
-                    response="Model not implemented yet"
-                    ;;
-            esac
-            
-            printf "\r\033[K"
-            if [[ -n "$response" ]]; then
-                echo -e "${TEAL}◉ $model_name: ${WHITE}$response${NC}"
-            else
-                echo -e "${RED}◉ Failed to get response${NC}"
-            fi
-            
-            echo -e "${CYAN}────────────────────────────────────────────────────────────────${NC}"
-        ) &
-        
-        local pid=$!
-        spinner $pid
-        wait $pid
-    done
+        echo -e "  🏷️  Node Name   : ${YELLOW}$NODE_NAME${NC}"
+        echo -e "  🌐 Subdomain   : ${YELLOW}$FULL_DOMAIN${NC}"
+        echo -e "  📌 IP VPS      : ${YELLOW}$USED_IP${NC}"
+        echo -e "  💾 RAM         : ${YELLOW}$RAM MB${NC}"
+        echo -e "  💿 Disk        : ${YELLOW}$DISK MB${NC}"
+        echo -e "  🔑 Location ID : ${YELLOW}$LOCATION_ID${NC}"
+        echo -e "  🆔 Node ID     : ${YELLOW}$NODE_ID${NC}"
+        echo -e "${GREEN}╚═══════════════════════════════════════════════════════════╝${NC}\n"
+    else
+        ERROR=$(echo "$NODE_RESULT" | cut -d'|' -f2)
+        echo -e "${RED}✗ Gagal membuat node: $ERROR${NC}\n"
+    fi
+    
+    read -p "Tekan Enter untuk kembali..."
 }
 
-ai_chat_menu() {
-    while true; do
-        display_neofetch
-        show_ai_menu
+create_subdomain_only() {
+    read -p "Masukkan format (hostname|ip): " INPUT
+    
+    if [[ ! "$INPUT" =~ \| ]]; then
+        echo -e "${RED}\n✗ Format salah! Gunakan: hostname|ip${NC}\n"
+        read -p "Tekan Enter untuk kembali..."
+        return
+    fi
+    
+    HOST=$(echo "$INPUT" | cut -d'|' -f1 | xargs)
+    IP=$(echo "$INPUT" | cut -d'|' -f2 | xargs)
+    
+    list_domains
+    read -p "  Pilih nomor domain: " DOMAIN_CHOICE
+    
+    get_domain_config $DOMAIN_CHOICE
+    if [ $? -ne 0 ]; then
+        echo -e "${RED}\n✗ Domain tidak ditemukan!${NC}\n"
+        read -p "Tekan Enter untuk kembali..."
+        return
+    fi
+    
+    echo ""
+    echo -e "${YELLOW}⏳ Membuat subdomain...${NC}"
+    RESULT=$(create_subdomain "$HOST" "$IP" "$ZONE" "$TOKEN" "$DOMAIN")
+    
+    if echo "$RESULT" | grep -q "^success"; then
+        FULL_DOMAIN=$(echo "$RESULT" | cut -d'|' -f2)
+        USED_IP=$(echo "$RESULT" | cut -d'|' -f3)
+        echo -e "${GREEN}✓ Proses selesai!${NC}"
         
-        echo -e "${CYAN}"
-        read -p "◉ Select AI model (0-4): " choice
+        echo -e "${GREEN}"
+        echo "╔═══════════════════════════════════════════════════╗"
+        echo "║        SUBDOMAIN BERHASIL DIBUAT                  ║"
+        echo "╚═══════════════════════════════════════════════════╝"
         echo -e "${NC}"
+        echo -e "  🌐 Subdomain : ${YELLOW}$FULL_DOMAIN${NC}"
+        echo -e "  📌 IP VPS    : ${YELLOW}$USED_IP${NC}"
+        echo -e "${GREEN}╚═══════════════════════════════════════════════════╝${NC}\n"
+    else
+        ERROR=$(echo "$RESULT" | cut -d'|' -f2)
+        echo -e "${RED}✗ Proses gagal!${NC}"
+        echo -e "${RED}\n✗ Error: $ERROR${NC}\n"
+    fi
+    
+    read -p "Tekan Enter untuk kembali..."
+}
+
+authenticate() {
+    clear
+    echo -e "${CYAN}"
+    echo "╔═══════════════════════════════════════════════════╗"
+    echo "║                 AUTHENTICATION                    ║"
+    echo "╚═══════════════════════════════════════════════════╝"
+    echo -e "${NC}"
+    
+    read -sp "  Password: " INPUT_PASS
+    echo ""
+    
+    if [ "$INPUT_PASS" == "$PASSWORD" ]; then
+        echo -e "${GREEN}\n✓ Autentikasi berhasil!${NC}\n"
+        sleep 1
+        return 0
+    else
+        echo -e "${RED}\n✗ Password salah!${NC}\n"
+        exit 1
+    fi
+}
+
+main_menu() {
+    while true; do
+        show_banner
         
-        case $choice in
-            1)
-                chat_with_ai "gpt4o" "GPT-4o"
-                ;;
-            2)
-                chat_with_ai "deepseek" "DeepSeek AI"
-                ;;
-            3)
-                chat_with_ai "groq" "Groq AI"
-                ;;
-            4)
-                chat_with_ai "felo" "Felo Search"
-                ;;
-            0)
-                echo -e "${YELLOW}◉ Returning to main menu...${NC}"
-                break
-                ;;
-            *)
-                echo -e "${RED}◉ Invalid selection! Choose 0-4${NC}"
-                ;;
+        echo -e "${MAGENTA}╔═══════════════════════════════════════════════════╗${NC}"
+        echo -e "${MAGENTA}║                   MENU UTAMA                      ║${NC}"
+        echo -e "${MAGENTA}╠═══════════════════════════════════════════════════╣${NC}"
+        echo -e "║  1. Buat Subdomain                                ║"
+        echo -e "║  2. Lihat Daftar Domain                           ║"
+        echo -e "║  3. Setup Pterodactyl Config                      ║"
+        echo -e "║  4. Auto Create Subdomain + Node (Pterodactyl)    ║"
+        echo -e "║  5. Keluar                                        ║"
+        echo -e "${MAGENTA}╚═══════════════════════════════════════════════════╝${NC}"
+        echo ""
+        
+        read -p "Pilih menu (1-5): " CHOICE
+        
+        case $CHOICE in
+            1) create_subdomain_only ;;
+            2) list_domains; read -p "Tekan Enter untuk kembali..." ;;
+            3) setup_pterodactyl ;;
+            4) auto_pterodactyl_mode ;;
+            5) echo -e "${CYAN}\n👋 Terima kasih telah menggunakan Subdomain Creator!\n${NC}"; exit 0 ;;
+            *) echo -e "${RED}\n✗ Pilihan tidak valid!${NC}\n"; read -p "Tekan Enter untuk kembali..." ;;
         esac
     done
 }
 
-main() {
-    if ! command -v curl &> /dev/null; then
-        echo -e "${RED}◉ curl is not installed!${NC}"
-        echo -e "${YELLOW}◉ Install with: pkg install curl${NC}"
-        exit 1
-    fi
-    
-    if ! command -v neofetch &> /dev/null; then
-        echo -e "${RED}◉ neofetch is not installed!${NC}"
-        echo -e "${YELLOW}◉ Install with: pkg install neofetch${NC}"
-        exit 1
-    fi
-    
-    while true; do
-        display_neofetch
-        show_tools_menu
-        
-        echo -e "${PURPLE}"
-        read -p "◉ Select option (0-6): " choice
-        echo -e "${NC}"
-        
-        case $choice in
-            1)
-                check_nik
-                ;;
-            2)
-                ngl_spammer
-                ;;
-            3)
-                stalk_instagram
-                ;;
-            4)
-                stalk_tiktok
-                ;;
-            5)
-                stalk_youtube
-                ;;
-            6)
-                ai_chat_menu
-                ;;
-            0)
-                echo -e "${GREEN}◉ Thank you for using JianTools${NC}"
-                echo -e "${PURPLE}◉ Goodbye!${NC}"
-                exit 0
-                ;;
-            *)
-                echo -e "${RED}◉ Invalid selection! Choose 0-6${NC}"
-                ;;
-        esac
-    done
-}
-
-main
+authenticate
+main_menu
